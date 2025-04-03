@@ -87,11 +87,18 @@ class EnrollmentListView(ListView):
     template_name = 'enrollments/enrollment_list.html'
     context_object_name = 'enrollments'
 
+
 class EnrollmentCreateView(CreateView):
     model = Enrollment
     form_class = EnrollmentForm
     template_name = 'enrollments/enrollment_form.html'
     success_url = reverse_lazy('enrollment-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['students'] = Student.objects.all()
+        context['courses'] = Course.objects.all()
+        return context
 
 class EnrollmentUpdateView(UpdateView):
     model = Enrollment
